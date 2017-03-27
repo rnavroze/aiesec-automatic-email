@@ -1,0 +1,76 @@
+html, body
+{
+	margin: 0;
+	padding: 0;
+	line-height: 1.8em;
+	font-family: 'Open Sans', Lato, Arial, sans-serif;
+}
+
+.header_bar
+{
+	background-color: #3692e0;
+	height: 60px;
+}
+
+.header_bar .aiesec_logo
+{
+	height: 25px;
+	margin: 17px 0;
+}
+
+ul
+{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	top: 0;
+	left: 200px;
+	position: absolute;
+}
+
+li
+{
+	float: left;
+}
+
+li a
+{
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 15px 15px;
+	text-decoration: none;
+	color: rgba(255, 255, 255, .75);
+}
+
+.user_avatar
+{
+	float: right;
+}
+
+.user_avatar a
+{
+	padding: 10px;
+	color: rgba(255, 255, 255, .75);
+	display: inline-block;
+}
+
+.user_avatar img
+{
+	width: 35px;
+	height: 35px;
+	background: #fff;
+	border-radius: 1000px;
+}
+
+.frame
+{
+	width: 600px;
+	padding: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	border-radius: 10px;
+	border: 1px solid #000000;
+}
