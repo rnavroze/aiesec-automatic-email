@@ -1,5 +1,5 @@
 <?php
-require_once "../unirest/Unirest.php";
+require_once __DIR__ . "/../unirest/Unirest.php";
 
 class EXPA
 {
