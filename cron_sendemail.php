@@ -20,11 +20,10 @@ $expa->debugMode(defined('ENV') && ENV == 'dev');
 
 // Now, we want to get a list of all global EPs, but only who were interacted with in the last 2 days
 // This is under the assumption that we run the script, at most, once a day
-$eplist = $expa->call("people", [
+$eplist = $expa->callPaginated("people", [
 	'filters[last_interaction][from]' => date('Y-m-d', strtotime("yesterday")),
 	'filters[last_interaction][to]'   => date('Y-m-d')
 ]);
-$eplist = $eplist['data'];
 
 // Process EP list
 foreach ($eplist as $ep)
@@ -57,12 +56,18 @@ foreach ($eplist as $ep)
 	// Send email
 	// First, does this entity have an email to send?
 	if (!file_exists($emails_dir . "$status-$entity_id.html"))
-		echo "The file $entity_id-$status doesn't exist.\n";
+		echo "{$ep['id']}: The file $entity_id-$status doesn't exist.\n";
 	else
 	{
+		$html = "";
+
 		// For the sake of debugging, we will only send this email to the developer and not the intended recepient.
-		$html = "<b>The intended recepient of this email is: {$ep['email']}.</b>";
-		$to_email = "raihan@aiesec.in";
+		// $html = "<b>The intended recepient of this email is: {$ep['email']}.</b>";
+		// $to_email = "developer@aiesec.org";
+
+		// WARNING: If you run this script, the email will actually go to the intended recepient.
+		// For testing purposes, comment out the next line and uncomment the previous two lines of code.
+		$to_email = $ep['email'];
 
 		// The subject of the email should depend upon the status
 		// TODO: This is only an example. More cases can be added.
