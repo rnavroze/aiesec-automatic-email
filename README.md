@@ -22,3 +22,4 @@ $pw = "EXPA_LOGIN_PASSWORD";
 ````
 
 4. Create a blank file libraries/expa/token.txt.
+5. Create a blank folder called html/ in root for HTML file uploads. Make sure this file is writeable by PHP.
