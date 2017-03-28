@@ -7,6 +7,7 @@ require_once "libraries/mandrill/Mandrill.php";
 
 // Prevent the script from hanging up
 set_time_limit(0);
+error_reporting(E_ALL);
 
 // Set up our EXPA object & EP table
 $expa = new EXPA();
@@ -55,7 +56,7 @@ foreach ($eplist as $ep)
 
 	// Send email
 	// First, does this entity have an email to send?
-	if (!file_exists($emails_dir . "$entity_id-$status.html"))
+	if (!file_exists($emails_dir . "$status-$entity_id.html"))
 		echo "The file $entity_id-$status doesn't exist.\n";
 	else
 	{
@@ -77,7 +78,7 @@ foreach ($eplist as $ep)
 		}
 
 		// Okay, now we need to send this file
-		$html .= file_get_contents($emails_dir . "$entity_id-$status.html");
+		$html .= file_get_contents($emails_dir . "$status-$entity_id.html");
 
 		// We need to replace %EPNAME% with the EP's name
 		$html = str_replace("%EPNAME%", $ep['full_name'], $html);
@@ -99,8 +100,16 @@ foreach ($eplist as $ep)
 			$mandrill = new Mandrill(MANDRILL_API_KEY);
 			$response = $mandrill->messages->send($query);
 
-			// If successful, update the entry
-			update_query(['email_sent' => 1], $epdata_table, "epid = " . $db->escape_string($ep['id']));
+			if (isset($response['status']) && $response['status'] == 'error')
+				echo "There was an error sending the email: " . $response['message'] . "\n";
+			else
+			{
+				// Show success
+				echo "Successfully sent to {$ep['id']}: $status-$entity_id.\n";
+				// If successful, update the entry
+				update_query(['email_sent' => 1], $epdata_table, "epid = " . $db->escape_string($ep['id']));
+			}
+			// TODO: if email was rejected, handle that also.
 		}
 		catch (Mandrill_Error $e)
 		{
